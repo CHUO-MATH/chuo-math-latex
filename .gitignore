@@ -1,0 +1,31 @@
+# LaTeX の中間ファイル
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+*.xdv
+
+# テンプレートをコンパイルしてできた PDF
+templates/*.pdf
+docker_sample/*.pdf
+
+# OS・エディタ
+.DS_Store
+.vscode/
