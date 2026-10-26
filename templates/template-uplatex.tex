@@ -1,0 +1,36 @@
+%!TEX program = uplatex
+\RequirePackage{plautopatch} % 既存パッケージとの互換性を保つパッチ
+\documentclass[uplatex,dvipdfmx]{jlreq} % エンジン非依存のjlreqクラス + ドライバ指定
+
+% 基本的な数学パッケージ群
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% 画像挿入パッケージ
+\usepackage{graphicx}
+
+% 文書情報の定義
+\title{レポート・論文タイトル}
+\author{あなたのお名前}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+これは \textbf{upLaTeX + jlreq} の標準テンプレートです。
+以下のように、世界標準の美しい数式を出力できます。
+
+\begin{equation}
+   \int_{-\infty}^{\infty} e^{-x^2}\, dx = \sqrt{\pi}
+\end{equation}
+
+\section{定理と証明}
+証明なども論理的に記述できます。
+
+\begin{proof}
+ここに証明の概要を記載します。
+\end{proof}
+
+\end{document}

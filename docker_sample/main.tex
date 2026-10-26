@@ -1,0 +1,53 @@
+\RequirePackage{plautopatch} % 海外製パッケージとの互換性を保つパッチ（\documentclass より前に書く）
+\documentclass[uplatex,dvipdfmx]{jlreq}
+
+% --- 数理系必須パッケージ ---
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,physics}
+\usepackage{graphicx}
+\usepackage[style=numeric,backend=biber]{biblatex}
+\addbibresource{references.bib}
+\usepackage{hyperref}
+\usepackage{pxjahyper}
+
+% --- 定理環境 ---
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}[theorem]{定義}
+\newtheorem{lemma}[theorem]{補題}
+\renewcommand{\proofname}{\textbf{証明}}
+
+% --- 表紙情報（ここを書き換える） ---
+\title{レポートのタイトル}
+\author{学籍番号：000000 \quad 氏名：学生 太郎}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% 目次（不要ならコメントアウト）
+\tableofcontents
+\clearpage
+
+\section{序論}
+ここに序論を記述する。研究の背景や目的など。
+
+\section{本論}
+ここに本論を記述する。
+
+\subsection{理論}
+必要な数式などを記述する。
+
+\subsection{解析結果}
+図表などをここに配置する。
+
+\section{結論}
+ここに結論を記述する。
+
+% 謝辞（必要ならコメントアウトを外す）
+%\section*{謝辞}
+%指導教員や協力者への感謝を記述する。
+
+% 参考文献
+\printbibliography[title=参考文献]
+
+\end{document}

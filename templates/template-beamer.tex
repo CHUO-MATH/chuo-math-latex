@@ -1,0 +1,62 @@
+%!TEX program = uplatex
+\RequirePackage{plautopatch}
+\documentclass[uplatex,dvipdfmx]{beamer}
+
+% テーマとカラーの設定
+\usetheme{Madrid}           % スライド全体の世界観（Madrid, Berlin, CambridgeUSなど）
+\usecolortheme{default}     % 配色
+
+% 日本語フォント・PDFのしおり文字化け防止
+\usepackage{pxjahyper}
+
+% 数学パッケージ
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{graphicx}
+
+% 発表情報の定義
+\title{ゼミ・学会発表タイトル}
+\subtitle{サブタイトルがあればここに}
+\author{あなたのお名前}
+\institute{◯◯大学 大学院 理学研究科 数学専攻}
+\date{\today}
+
+\begin{document}
+
+% タイトルスライド
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% 目次スライド
+\begin{frame}{目次}
+  \tableofcontents
+\end{frame}
+
+\section{はじめに}
+
+% スライド1枚目
+\begin{frame}{研究の背景}
+  \begin{itemize}
+    \item 箇条書きで背景を説明します。
+    \item 1つのスライドに詰め込みすぎないのがポイントです。
+    \item 文字サイズを大きめにすると見やすくなります。
+  \end{itemize}
+\end{frame}
+
+\section{主結果}
+
+% スライド2枚目
+\begin{frame}{主定理}
+  \begin{theorem}
+    任意の $\varepsilon > 0$ に対して、以下が成り立つ……
+  \end{theorem}
+
+  \begin{proof}
+    証明の概要をここに記述します。
+    詳細は配付資料や論文をご参照ください。
+  \end{proof}
+\end{frame}
+
+\end{document}

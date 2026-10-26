@@ -1,0 +1,44 @@
+\RequirePackage{plautopatch} % 海外製パッケージとの互換性を保つパッチ（\documentclass より前に書く）
+\documentclass[uplatex,dvipdfmx]{jlreq}
+
+% --- 数理系必須パッケージ ---
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,physics}
+\usepackage{graphicx}
+\usepackage[style=numeric,backend=biber]{biblatex}
+\addbibresource{references.bib}
+\usepackage{hyperref}
+\usepackage{pxjahyper}
+
+% --- 定理環境 ---
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}[theorem]{定義}
+\renewcommand{\proofname}{\textbf{証明}}
+
+\title{LaTeX記述サンプル（見本）}
+\author{数理 太郎}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+これは \texttt{uplatex} と \texttt{jlreq} クラスを用いた記述見本です。
+レポートを書く際は \texttt{main.tex} を使用してください。
+
+\section{数式の書き方サンプル}
+\begin{theorem}[Eulerの公式]
+任意の $\theta \in \mathbb{R}$ に対して次が成り立つ：
+\begin{equation}
+    e^{i\theta} = \cos\theta + i\sin\theta
+\end{equation}
+\end{theorem}
+
+\section{参考文献の引用サンプル}
+参考文献を引用するには \texttt{\textbackslash cite\{キー\}} コマンドを使います。
+引用キー（ID）は \texttt{references.bib} ファイル内で定義されています。
+
+例：LaTeXの必読書といえば『美文書作成入門』\cite{okumura2023}です。
+
+\printbibliography[title=参考文献]
+\end{document}

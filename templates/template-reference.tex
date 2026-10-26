@@ -1,0 +1,35 @@
+%!TEX program = uplatex
+\RequirePackage{plautopatch}
+\documentclass[uplatex,dvipdfmx]{jlreq}
+
+\usepackage{amsmath,amssymb,amsthm}
+
+% --- ここから本文 ---
+\title{参考文献 (BibTeX) テンプレート}
+\author{あなたのお名前}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+これは、別ファイル（\texttt{myref.bib}）を用いて参考文献リストを自動生成・管理するためのテンプレートです。
+
+\section{引用テスト}
+例えば、TeXの根幹たるコンセプトやアルゴリズムについては、開発者自身の著書 \cite{knuth84} が有名です。
+また、日本における実践的な環境構築やマークアップの作法については、奥村・黒木による「美文書作成入門」 \cite{okumura2023} に詳しくまとまっています。
+
+\vspace{2em}
+
+% ==============================
+% 参考文献リストの出力
+% ==============================
+% 論文で最も標準的な「出現順」のスタイル（junsrt）を指定
+\bibliographystyle{junsrt}
+
+% 読み込む .bib ファイルの名前を拡張子なしで指定
+\bibliography{myref}
+
+% ※注意: ファイルを分割・引用しているため、複数回コンパイルが必要です。
+% 本ガイドの .latexmkrc を設定済みであれば、自動で全て実行・解決されます。
+\end{document}

@@ -1,0 +1,36 @@
+{
+	"name": "LaTeX Dev Container",
+	"image": "texlive/texlive:latest",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"James-Yu.latex-workshop",
+				"MS-CEINTL.vscode-language-pack-ja"
+			],
+			"settings": {
+				"latex-workshop.latex.autoBuild.run": "onSave",
+				"latex-workshop.view.pdf.viewer": "tab",
+				"latex-workshop.latex.recipes": [
+					{
+						"name": "uplatex",
+						"tools": [
+							"latexmk_uplatex"
+						]
+					}
+				],
+				"latex-workshop.latex.tools": [
+					{
+						"name": "latexmk_uplatex",
+						"command": "latexmk",
+						"args": [
+							"-gg",
+							"-pdfdvi",
+							"%DOC%"
+						]
+					}
+				]
+			}
+		}
+	},
+	"remoteUser": "root"
+}
