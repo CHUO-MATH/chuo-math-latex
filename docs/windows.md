@@ -4,7 +4,7 @@
 
 > 本資料の想定環境
 - Windows 10 / 11（64bit）
-- TeX Live 2025
+- TeX Live 2026
 - VS Code / TeXworks
 > 
 > 
@@ -148,7 +148,7 @@ OneDriveの「重要なフォルダーの保護（バックアップ）」機能
 Win32 APIの仕様により、ファイルパスの最大長がデフォルトで260文字に制限されています。TeX Liveは深いディレクトリ構造を持つため、以下のようなパスが生成されます。
 
 ```
-C:\texlive\2025\texmf-dist\tex\latex\l3packages\xparse\xparse.sty
+C:\texlive\2026\texmf-dist\tex\latex\l3packages\xparse\xparse.sty
 ```
 
 これに日本語プロジェクト名や深いフォルダ階層が加わると、制限を超える可能性があります。
@@ -448,7 +448,7 @@ TeX Liveのインストール方法は、**TeX Wiki**に非常に詳しく解説
     - 「インストール」をクリック
     - **1〜2時間程度**かかります。気長に待ちましょう。
 5. **TeXworksのタイプセット方式をupLaTeXにする**
-    - スタートメニューから「TeX Live 2025」→「TeXworks editor」を起動
+    - スタートメニューから「TeX Live 2026」（インストールした年度）→「TeXworks editor」を起動
     - メニューの「編集」→「設定」→「タイプセット」タブを開き、「デフォルト」を **「upLaTeX (ptex2pdf)」** にする
     - 候補に「upLaTeX (ptex2pdf)」が無い場合は、管理者権限のPowerShellで `tlmgr postaction install script ptex2pdf` を実行してから設定を開き直す（それでも出ない場合の手動登録は[環境構築ガイド](quickstart.md)の「TeXworksを使う場合」を参照）
     - 設定後、TeXworksをいったん閉じて開き直す
@@ -492,7 +492,7 @@ TeXworksは軽量で使いやすいエディタですが、以下の限界があ
 
 ### TeXworksの既知の問題：複数ウィンドウ起動時のエラー
 
-> ⚠️ 既知の挙動（TeX Live 2023以降）
+> ⚠️ 既知の挙動（TeX Live 2023〜2025）
 > 
 
 Windows環境において、TeXworksを起動した状態で**エクスプローラーから別の `.tex` ファイルをダブルクリックして開こうとすると**、以下のようなエラーメッセージがポップアップ表示される場合があります。
@@ -516,7 +516,7 @@ texworks "ファイルパス"
 
 TeXworksのプロセス間通信（別インスタンスがファイルを既存インスタンスに渡す際の終了コード処理）に起因する不具合です。[TeXworks GitHub Issue #1093](https://github.com/TeXworks/texworks/issues/1093) として2025年12月8日に報告され、**同年12月18日に修正済み**（closed: completed）としてクローズされています。
 
-ただし、本ガイドが対象とするTeX Live 2025に同梱のTeXworks（バージョン0.6.10）はこの修正より前のバージョンのため、引き続き現象が発生します。TeX Live 2026以降に同梱されるTeXworksでは解消されている可能性が高いです。
+この修正は TeXworks 0.6.11（TeX Live 2026 に同梱）のリリースノートに「Fix exit code when transferring to other instance」として載っています。TeX Live 2025 に同梱の TeXworks 0.6.10 以前では現象が発生します。TeX Live 2025 を使い続けている場合は、TeX Live 2026 に入れ替えるか、以下の回避策を使ってください。
 
 ### 回避策
 
@@ -544,14 +544,14 @@ tlmgr update --all
 > 通常は月に1回程度の更新で十分です。論文提出直前など重要な作業前は、環境を変更しないことを推奨します。
 > 
 
-> ⚠️ 次期バージョン（TeX Live 2026）への移行について
+> ⚠️ 新しい年度版への移行について
 > 
 > 
-> TeX Liveは毎年3月頃に新バージョンがリリースされます。TeX Live 2025からTeX Live 2026への移行は、`tlmgr`では行えません。
+> TeX Liveは毎年3月頃に新バージョンがリリースされます。年度をまたぐ移行（例：TeX Live 2026 → 2027）は、`tlmgr`では行えません。
 > 
 > 新バージョンへの移行方法：
-> 1. 旧バージョン（2025）をアンインストール
-> 2. 新バージョン（2026）を新規インストール
+> 1. 旧バージョン（例：2026）をアンインストール
+> 2. 新バージョン（例：2027）を新規インストール
 > 
 > 論文執筆中など重要な作業中は、安定性を優先して旧バージョンを継続使用することを推奨します。新バージョンのリリース直後は、パッケージの互換性問題が発生する可能性があります。
 > 
@@ -589,7 +589,7 @@ Dockerは、**仮想的なLinux環境**をWindows上に構築する技術です�
 │  │  ┌─────────────────────────────────────────────┐  │  │
 │  │  │  Docker コンテナ                             │  │  │
 │  │  │  ┌─────────────────────────────────────┐    │  │  │
-│  │  │  │  TeX Live 2025                      │    │  │  │
+│  │  │  │  TeX Live（最新版）                 │    │  │  │
 │  │  │  │  - uplatex, lualatex, etc.          │    │  │  │
 │  │  │  │  - latexmk                          │    │  │  │
 │  │  │  │  - 全パッケージ                      │    │  │  │
@@ -741,7 +741,7 @@ docker --version
 出力例：
 
 ```
-Docker version 24.x.x, build xxxxxxx
+Docker version 29.x.x, build xxxxxxx
 ```
 
 続いて、テスト用コンテナを実行：
@@ -869,7 +869,7 @@ ls -la texwork/
 > 📝 補足：VS Codeからの操作
 > 
 > 
-> VS Codeの「Remote - WSL」拡張機能を使えば、WSL側のフォルダをシームレスに操作できます。
+> VS Codeの「WSL」拡張機能（旧名「Remote - WSL」）を使えば、WSL側のフォルダをシームレスに操作できます。
 > Windows側のVS Codeから、WSL側のファイルを直接編集できます。
 > 
 
@@ -902,7 +902,7 @@ ls -la texwork/
 
 ```json
 {
-    "name": "LaTeX Environment (TeX Live 2025)",
+    "name": "LaTeX Environment (TeX Live)",
     "image": "texlive/texlive:latest",
 
     // コンテナ作成後に実行するコマンド
@@ -1018,7 +1018,7 @@ ls -la texwork/
 
 | 設定項目 | 値 | 説明 |
 | --- | --- | --- |
-| `name` | `"LaTeX Environment (TeX Live 2025)"` | VS Codeのステータスバーに表示されるコンテナ名。任意の名前を設定可能 |
+| `name` | `"LaTeX Environment (TeX Live)"` | VS Codeのステータスバーに表示されるコンテナ名。任意の名前を設定可能 |
 | `image` | `"texlive/texlive:latest"` | 使用するDockerイメージ。公式のTeX Live全パッケージ版（約5GB） |
 | `postCreateCommand` | `"tlmgr update --self && ..."` | コンテナ初回作成時に1度だけ実行されるコマンド |
 
@@ -1125,20 +1125,20 @@ code .
 **方法2: VS Codeから開く**
 
 1. VS Codeを起動
-2. 左下の緑色のアイコン（`><`）をクリック
+2. 左下のリモートインジケーター（`><` のアイコン）をクリック
 3. 「WSL への接続」または「Connect to WSL」を選択
 4. 「フォルダーを開く」→ `/home/ユーザー名/texwork/thesis/` を選択
 
 > 📝 補足：WSL拡張機能
 > 
 > 
-> 「Remote - WSL」拡張機能がインストールされていない場合は、
+> 「WSL」拡張機能（旧名「Remote - WSL」）がインストールされていない場合は、
 > 先にインストールしてください。VS Codeが自動的に推奨することもあります。
 > 
 
 ### 5.2 コンテナで再度開く
 
-1. VS Code左下の緑色のアイコン（`><`）をクリック
+1. VS Code左下のリモートインジケーター（`><` のアイコン）をクリック
 2. 「コンテナーで再度開く (Reopen in Container)」を選択
 
 **初回起動時の動作：**
@@ -1281,10 +1281,10 @@ WindowsのDocker環境から、こんにちは！
 
 | 場所 | 説明 | 永続性 |
 | --- | --- | --- |
-| `/workspaces/texwork/` | 作業フォルダ（WSL側 `/home/ユーザー名/texwork/` がマウント） | **永続** |
+| `/workspaces/<開いたフォルダ名>/`（例：`/workspaces/thesis/`） | 作業フォルダ（VS Codeで開いたWSL側のフォルダ、例：`/home/ユーザー名/texwork/thesis/` がマウントされる） | **永続** |
 | `/root/` など | コンテナ内のその他の場所 | **コンテナ削除時に消失** |
 
-**重要：** 作業ファイルは必ず `/workspaces/` 以下（= WSL側の `/home/ユーザー名/texwork/`）に保存してください。4.1で説明した通り、Windows側（`C:\texwork\`）には置かないでください。
+**重要：** 作業ファイルは必ず `/workspaces/` 以下（= WSL側の `/home/ユーザー名/texwork/` 以下）に保存してください。4.1で説明した通り、Windows側（`C:\texwork\`）には置かないでください。
 
 ### Gitによるバージョン管理（推奨）
 
@@ -1463,7 +1463,7 @@ git commit -m "Initial commit"
 
 ### 症状：TeXworksで別ファイルを開こうとするとエラーポップアップが表示される
 
-**原因：** TeXworksの既知の問題（TeX Live 2023以降のWindows環境）
+**原因：** TeXworksの既知の問題（TeX Live 2023〜2025 のWindows環境）
 
 **詳細：**
 TeXworksを起動した状態で、エクスプローラーから別の `.tex` ファイルをダブルクリックして開こうとすると、以下のようなエラーが表示されることがあります。
@@ -1480,7 +1480,7 @@ command failed with exit code ...
 - エクスプローラーからの `.tex` ファイルのダブルクリックは避ける
 - 複数ファイルを扱う場合は、VS Code等の別エディタの使用を推奨
 
-**修正状況：** [TeXworks GitHub Issue #1093](https://github.com/TeXworks/texworks/issues/1093) として2025年12月18日に修正済み（completed close）。TeX Live 2025同梱のTeXworks（0.6.10）には未反映ですが、TeX Live 2026以降では解消されている可能性が高いです。
+**修正状況：** [TeXworks GitHub Issue #1093](https://github.com/TeXworks/texworks/issues/1093) として2025年12月18日に修正され、TeX Live 2026 に同梱の TeXworks 0.6.11 に入りました。TeX Live 2025 同梱の 0.6.10 以前では発生します。
 
 ### 症状：PowerShellでエラーメッセージが文字化けする
 
@@ -1571,7 +1571,7 @@ WSL2では、Windows側のファイルシステム（`/mnt/c/` 以下）への�
 
 **対処：**
 - プロジェクトを**WSL側**（`/home/ユーザー名/texwork/`）に移動する
-- VS CodeからWSL側のフォルダを直接開く（「Remote - WSL」拡張機能を使用）
+- VS CodeからWSL側のフォルダを直接開く（「WSL」拡張機能を使用）
 
 **参考：** [ファイル システム間での作業 | Microsoft Learn](https://learn.microsoft.com/ja-jp/windows/wsl/filesystems)
 
@@ -1655,15 +1655,15 @@ LaTeXは、一度習得すれば一生使えるスキルです。環境構築と
 
 ### 本ガイドのバージョン情報
 
-- **対象TeX Liveバージョン:** TeX Live 2025
+- **対象TeX Liveバージョン:** TeX Live 2026
 
 > 📝 将来のTeX Liveバージョンについて
 > 
 > 
-> TeX Liveは毎年3月頃に新バージョンがリリースされます（例：TeX Live 2026は2026年3月頃予定）。
+> TeX Liveは毎年3月頃に新バージョンがリリースされます（TeX Live 2026 は2026年3月にリリース）。
 > 
 > 本ガイドの手順は、基本的に将来のバージョンでも有効ですが、以下の点にご注意ください：
-> - インストールURL・ファイル名のバージョン番号が変わる（例：`2025` → `2026`）
+> - インストール先のパスやスタートメニューの年度が変わる（例：`2026` → `2027`）
 > - Dockerイメージ `texlive/texlive:latest` は常に最新版を取得するため、手順の変更は不要
 > - 新バージョンリリース直後は、パッケージの互換性問題が発生する可能性があるため、重要な作業中は移行を避けることを推奨
 >

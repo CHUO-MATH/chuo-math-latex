@@ -151,7 +151,7 @@ DockerコンテナはLinuxで動いています。Windowsのファイルシス�
 3. **プロジェクトの配置**  
    * この場所に MyThesis などのプロジェクトフォルダを作成し、devcontainer.json や main.tex を配置します。  
 4. **VS Codeで開く**  
-   * VS Codeを起動し、左下の緑色のボタン（リモートインジケーター）をクリックします。  
+   * VS Codeを起動し、左下のリモートインジケーター（`><` のアイコン）をクリックします。  
    * **「Connect to WSL」** を選択し、Ubuntuに接続します。  
    * 「フォルダを開く」から、先ほど作ったフォルダ（例: /home/username/MyThesis）を選択します。  
    * この状態でさらに .devcontainer が検出されると、「Reopen in Container」の通知が出るのでクリックします。
