@@ -621,7 +621,7 @@ Dockerは、**仮想的なLinux環境**をWindows上に構築する技術です�
 
 Docker Desktop for Windowsは、バックエンドとして**WSL2**を使用します。
 
-### 1.1 BIOSで仮想化機能を有効化
+### 4.3.1 BIOSで仮想化機能を有効化
 
 WSL2を使用するには、CPUの仮想化支援機能が有効になっている必要があります。
 
@@ -636,7 +636,7 @@ WSL2を使用するには、CPUの仮想化支援機能が有効になってい�
 3. 「Intel Virtualization Technology」または「AMD-V」を「Enabled」に変更
 4. 保存して再起動
 
-### 1.2 WSL2のインストール
+### 4.3.2 WSL2のインストール
 
 1. **PowerShellを管理者として実行**
     - スタートメニューで「PowerShell」を検索
@@ -687,7 +687,7 @@ WSL2を使用するには、CPUの仮想化支援機能が有効になってい�
 
 ## 4.4 Step 2: Docker Desktopのインストール
 
-### 2.1 ダウンロードとインストール
+### 4.4.1 ダウンロードとインストール
 
 1. **Docker Desktop for Windows をダウンロード**
     - [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
@@ -699,7 +699,7 @@ WSL2を使用するには、CPUの仮想化支援機能が有効になってい�
     - 「Ok」をクリックしてインストール開始
 3. **インストール完了後、再起動**
 
-### 2.2 Docker Desktopの初期設定
+### 4.4.2 Docker Desktopの初期設定
 
 1. **Docker Desktopを起動**
     - デスクトップのアイコン、またはスタートメニューから起動
@@ -711,7 +711,7 @@ WSL2を使用するには、CPUの仮想化支援機能が有効になってい�
     - 「Resources」→「WSL Integration」で、使用するLinuxディストリビューションを選択
     - メモリやCPUの割り当ては、デフォルトで問題ありません
 
-### 2.3 動作確認
+### 4.4.3 動作確認
 
 PowerShellで以下を実行：
 
@@ -737,7 +737,7 @@ docker run hello-world
 
 ## 4.5 Step 3: VS Codeのインストールと設定
 
-### 3.1 VS Codeのインストール
+### 4.5.1 VS Codeのインストール
 
 1. **ダウンロード**
     - [https://code.visualstudio.com/](https://code.visualstudio.com/)
@@ -746,7 +746,7 @@ docker run hello-world
     - ダウンロードしたインストーラーを実行
     - 「PATHへの追加」にチェックを入れることを推奨
 
-### 3.2 必要な拡張機能のインストール
+### 4.5.2 必要な拡張機能のインストール
 
 VS Codeを起動し、拡張機能タブ（`Ctrl + Shift + X`）を開きます。
 
@@ -755,8 +755,10 @@ VS Codeを起動し、拡張機能タブ（`Ctrl + Shift + X`）を開きます�
 | 拡張機能名 | 説明 |
 | --- | --- |
 | **Japanese Language Pack for Visual Studio Code** | VS Codeの日本語化 |
+| **WSL** | WSL側（Linux）のフォルダをVS Codeで開くための拡張機能 |
 | **Dev Containers** | Dockerコンテナ内で開発するための拡張機能 |
-| **LaTeX Workshop** | LaTeXの編集・コンパイル・プレビュー支援 |
+
+LaTeX Workshop は、コンテナを起動したときにコンテナの中へ自動で入ります（[Docker編](docker.md) の `devcontainer.json` で指定）。
 
 > **📝 補足：拡張機能のインストール方法**
 >
@@ -768,13 +770,13 @@ VS Codeを起動し、拡張機能タブ（`Ctrl + Shift + X`）を開きます�
 
 ## 4.6 Step 4: LaTeXプロジェクトの作成
 
-### 4.1 重要：プロジェクトの配置場所
+### 4.6.1 重要：プロジェクトの配置場所
 
 > ⚠️ 本セクションは非常に重要です。必ず理解してから先に進んでください。
 
 WSL2環境では、**プロジェクトをどこに置くか**がパフォーマンスに大きく影響します。
 
-### Windows側とLinux側のファイルシステムの違い
+#### Windows側とLinux側のファイルシステムの違い
 
 WSL2には、2つのファイルシステムがあります。
 
@@ -783,13 +785,13 @@ WSL2には、2つのファイルシステムがあります。
 | **Linux側** | `/home/ユーザー名/` | WSL2ネイティブ。高速 |
 | **Windows側** | `/mnt/c/Users/...` | Windowsからマウント。**低速** |
 
-### なぜWindows側は遅いのか？
+#### なぜWindows側は遅いのか？
 
 WSL2は軽量な仮想マシンです。Windows側のファイル（`/mnt/c/` 以下）にアクセスする際、9Pプロトコルという仕組みを介してファイルシステム間の変換が行われます。この変換処理がボトルネックとなり、**ファイルI/Oが数倍以上遅くなる場合があります**。
 
 LaTeXのコンパイルでは、大量の中間ファイル（`.aux`、`.log`、`.toc` など）が読み書きされるため、この影響は顕著です。また、Git、npm、Dockerなどの開発ツールでも同様の問題が発生します。
 
-### Microsoft公式の推奨
+#### Microsoft公式の推奨
 
 Microsoftの公式ドキュメントでも、以下のように明記されています。
 
@@ -797,7 +799,7 @@ Microsoftの公式ドキュメントでも、以下のように明記されて�
 >
 > — [ファイル システム間での作業 | Microsoft Learn](https://learn.microsoft.com/ja-jp/windows/wsl/filesystems)
 
-### 本ガイドの原則
+#### 本ガイドの原則
 
 したがって、本ガイドでは以下を**必須の原則**とします。
 
@@ -812,7 +814,7 @@ Microsoftの公式ドキュメントでも、以下のように明記されて�
 /home/ユーザー名/texwork/report/
 ```
 
-### WindowsエクスプローラーからWSL側にアクセスする方法
+#### WindowsエクスプローラーからWSL側にアクセスする方法
 
 WSL側のファイルは、Windowsエクスプローラーからもアクセスできます。
 
@@ -827,7 +829,7 @@ cd ~/texwork
 explorer.exe .
 ```
 
-### 4.2 作業フォルダの作成（WSL側）
+### 4.6.2 作業フォルダの作成（WSL側）
 
 WSLターミナル（Ubuntu）を開き、以下のコマンドでフォルダを作成します。
 
@@ -847,239 +849,7 @@ ls -la texwork/
 > VS Codeの「WSL」拡張機能（旧名「Remote - WSL」）を使えば、WSL側のフォルダをシームレスに操作できます。
 > Windows側のVS Codeから、WSL側のファイルを直接編集できます。
 
-### 4.3 プロジェクトフォルダ構成
-
-`/home/ユーザー名/texwork/thesis/` 内に、以下の構造でファイルを作成します。
-
-```
-/home/ユーザー名/texwork/thesis/
-├── .devcontainer/
-│   └── devcontainer.json    ← Docker設定
-├── .latexmkrc               ← latexmk設定（任意）
-├── main.tex                 ← メインのTeXファイル
-└── (その他のTeXファイル、画像など)
-```
-
-### 4.4 `.devcontainer/devcontainer.json` の作成
-
-`.devcontainer` フォルダを作成し、その中に `devcontainer.json` ファイルを作成します。
-
-> **📝 補足：隠しフォルダの作成**
->
-> Windowsでは `.` で始まるフォルダは通常表示されません。
-> エクスプローラーの「表示」→「隠しファイル」にチェックを入れるか、
-> VS Code内でフォルダを作成してください。
-
-**`.devcontainer/devcontainer.json`:**
-
-```json
-{
-    "name": "LaTeX Environment (TeX Live)",
-    "image": "texlive/texlive:latest",
-
-    // コンテナ作成後に実行するコマンド
-    "postCreateCommand": "tlmgr update --self && echo 'TeX Live ready!'",
-
-    // VS Code拡張機能とsettings
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "James-Yu.latex-workshop"
-            ],
-            "settings": {
-                // === 基本設定 ===
-                "files.autoSave": "afterDelay",
-                "files.autoSaveDelay": 1000,
-                "editor.wordWrap": "on",
-
-                // === LaTeX Workshop 設定 ===
-                "latex-workshop.latex.autoBuild.run": "onSave",
-                "latex-workshop.view.pdf.viewer": "tab",
-                "latex-workshop.latex.autoClean.run": "onBuilt",
-
-                // === レシピ定義 ===
-                // 【重要】一番上のレシピがデフォルトで実行されます
-                "latex-workshop.latex.recipes": [
-                    {
-                        "name": "upLaTeX (推奨)",
-                        "tools": ["latexmk_uplatex"]
-                    },
-                    {
-                        "name": "LuaLaTeX",
-                        "tools": ["latexmk_lualatex"]
-                    },
-                    {
-                        "name": "pLaTeX (レガシー)",
-                        "tools": ["latexmk_platex"]
-                    },
-                    {
-                        "name": "XeLaTeX",
-                        "tools": ["latexmk_xelatex"]
-                    }
-                ],
-
-                // === ツール定義 ===
-                "latex-workshop.latex.tools": [
-                    {
-                        "name": "latexmk_uplatex",
-                        "command": "latexmk",
-                        "args": [
-                            "-pdfdvi",
-                            "-e", "$latex='uplatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S'",
-                            "-e", "$bibtex='upbibtex %O %B'",
-                            "-e", "$dvipdf='dvipdfmx %O -o %D %S'",
-                            "-e", "$makeindex='upmendex %O -o %D %S'",
-                            "-outdir=%OUTDIR%",
-                            "%DOC%"
-                        ]
-                    },
-                    {
-                        "name": "latexmk_lualatex",
-                        "command": "latexmk",
-                        "args": [
-                            "-pdflua",
-                            "-e", "$lualatex='lualatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S'",
-                            "-e", "$bibtex='upbibtex %O %B'",
-                            "-e", "$makeindex='upmendex %O -o %D %S'",
-                            "-outdir=%OUTDIR%",
-                            "%DOC%"
-                        ]
-                    },
-                    {
-                        "name": "latexmk_platex",
-                        "command": "latexmk",
-                        "args": [
-                            "-pdfdvi",
-                            "-e", "$latex='platex -synctex=1 -interaction=nonstopmode -file-line-error %O %S'",
-                            "-e", "$bibtex='pbibtex %O %B'",
-                            "-e", "$dvipdf='dvipdfmx %O -o %D %S'",
-                            "-outdir=%OUTDIR%",
-                            "%DOC%"
-                        ]
-                    },
-                    {
-                        "name": "latexmk_xelatex",
-                        "command": "latexmk",
-                        "args": [
-                            "-pdfxe",
-                            "-e", "$xelatex='xelatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S'",
-                            "-outdir=%OUTDIR%",
-                            "%DOC%"
-                        ]
-                    }
-                ],
-
-                // === クリーンアップ設定 ===
-                // ※ clean.method を "glob" にしたときだけ使われるリスト（既定の "command" では latexmk -c で掃除される）
-                // ※ *.synctex.gz は消さない（消すと PDF とソースの相互ジャンプができなくなる）
-                "latex-workshop.latex.clean.fileTypes": [
-                    "*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof",
-                    "*.lot", "*.out", "*.toc", "*.acn", "*.acr", "*.alg",
-                    "*.glg", "*.glo", "*.gls", "*.ist", "*.fls", "*.log",
-                    "*.fdb_latexmk", "*.dvi", "*.nav", "*.snm", "*.vrb"
-                ]
-            }
-        }
-    }
-}
-```
-
-### 設定項目の詳細解説
-
-### 基本設定
-
-| 設定項目 | 値 | 説明 |
-| --- | --- | --- |
-| `name` | `"LaTeX Environment (TeX Live)"` | VS Codeのステータスバーに表示されるコンテナ名。任意の名前を設定可能 |
-| `image` | `"texlive/texlive:latest"` | 使用するDockerイメージ。公式のTeX Live全パッケージ版（約5GB） |
-| `postCreateCommand` | `"tlmgr update --self && ..."` | コンテナ初回作成時に1度だけ実行されるコマンド |
-
-### VS Code基本設定
-
-| 設定項目 | 値 | 説明 |
-| --- | --- | --- |
-| `files.autoSave` | `"afterDelay"` | 一定時間後に自動保存。`"off"` で無効化可能 |
-| `files.autoSaveDelay` | `1000` | 自動保存までの遅延時間（ミリ秒）。1000 = 1秒 |
-| `editor.wordWrap` | `"on"` | 長い行を折り返して表示。LaTeXでは `"on"` 推奨 |
-
-### LaTeX Workshop設定
-
-| 設定項目 | 値 | 説明 |
-| --- | --- | --- |
-| `autoBuild.run` | `"onSave"` | ファイル保存時に自動コンパイル（自動保存でも動く）。`"never"` で手動のみ |
-| `view.pdf.viewer` | `"tab"` | PDFをVS Code内のタブで表示。`"browser"` で外部ブラウザ |
-| `autoClean.run` | `"onBuilt"` | コンパイルのたびに（失敗したときも）中間ファイルを自動削除 |
-
-### レシピ（recipes）の仕組み
-
-レシピは「どのツールを、どの順序で実行するか」を定義します。
-
-```json
-{
-    "name": "upLaTeX (推奨)",  // VS Codeのメニューに表示される名前
-    "tools": ["latexmk_uplatex"]  // 実行するツール名（toolsで定義）
-}
-```
-
-**レシピの選択ルール：**
-- 配列の**一番上**がデフォルトで実行される
-- マジックコメント（`%!TEX program = lualatex`）で個別指定可能
-- サイドバーから手動選択も可能
-
-### ツール（tools）の仕組み
-
-ツールは「実際に実行されるコマンド」を定義します。
-
-```json
-{
-    "name": "latexmk_uplatex",  // レシピから参照される名前
-    "command": "latexmk",       // 実行するコマンド
-    "args": [...]              // コマンドライン引数
-}
-```
-
-### latexmkの引数の解説
-
-upLaTeXツールの引数を詳しく解説します。
-
-| 引数 | 説明 |
-| --- | --- |
-| `-pdfdvi` | DVI経由でPDFを生成（upLaTeX/pLaTeX用） |
-| `-e "$latex='uplatex ...'"` | LaTeXエンジンをuplatexに指定 |
-| `-synctex=1` | SyncTeX有効化（PDFとソースの相互ジャンプ） |
-| `-interaction=nonstopmode` | エラー時に停止せず最後まで実行 |
-| `-file-line-error` | エラーメッセージにファイル名と行番号を表示 |
-| `-e "$bibtex='upbibtex ...'"` | 参考文献処理にupbibtexを使用 |
-| `-e "$dvipdf='dvipdfmx ...'"` | DVI→PDF変換にdvipdfmxを使用 |
-| `-e "$makeindex='upmendex ...'"` | 索引処理にupmendexを使用 |
-| `-outdir=%OUTDIR%` | 出力ディレクトリ（LaTeX Workshopが自動設定） |
-| `%DOC%` | 対象ファイル（LaTeX Workshopが自動設定） |
-
-### クリーンアップ対象ファイル
-
-`clean.method` を `"glob"` にしたとき、`clean.fileTypes` で指定されたファイルが自動クリーンアップの対象になります（既定の `"command"` では `latexmk -c` が中間ファイルを消し、PDF と `.synctex.gz` は残ります）。
-
-| 拡張子 | 生成元 | 説明 |
-| --- | --- | --- |
-| `.aux` | LaTeX | 相互参照情報 |
-| `.log` | LaTeX | コンパイルログ |
-| `.toc` | LaTeX | 目次情報 |
-| `.bbl`, `.blg` | BibTeX | 参考文献処理の中間ファイル |
-| `.idx`, `.ind` | makeindex | 索引処理の中間ファイル |
-| `.dvi` | LaTeX | DVI形式の出力（PDF生成後は不要） |
-| `.fdb_latexmk` | latexmk | 依存関係追跡データベース |
-| `.nav`, `.snm`, `.vrb` | Beamer | スライド用中間ファイル |
-
-> **📝 補足：`.synctex.gz` はリストに入れない**
->
-> `.synctex.gz`（ソースとPDFの対応情報）を削除すると、PDFからソースへのジャンプができなくなります。
-> そのため、上の設定ではクリーンアップの対象から外しています。
-
----
-
-## 4.7 Step 5: コンテナの起動と動作確認
-
-### 5.1 VS CodeでWSL側のフォルダを開く
+## 4.7 Step 5: VS CodeでWSL側のフォルダを開く
 
 **方法1: WSLターミナルから開く（推奨）**
 
@@ -1104,280 +874,15 @@ code .
 > 「WSL」拡張機能（旧名「Remote - WSL」）がインストールされていない場合は、
 > 先にインストールしてください。VS Codeが自動的に推奨することもあります。
 
-### 5.2 コンテナで再度開く
+## 4.8 Step 6: ここから先は Docker編へ
 
-1. VS Code左下のリモートインジケーター（`><` のアイコン）をクリック
-2. 「コンテナーで再度開く (Reopen in Container)」を選択
+ここまでで、Windows に固有の準備は終わりです。ここから先（`devcontainer.json` の作成、コンテナの起動、動作確認、エンジンの切り替え、トラブルシューティング）は Mac と共通なので、[Docker編](docker.md) の **Step 2** から進めてください。
 
-**初回起動時の動作：**
-- Dockerイメージのダウンロード（約4〜5GB、10〜30分程度）
-- コンテナの作成と起動
-- VS Code拡張機能のインストール
-- `postCreateCommand` の実行
+Windows で進めるときは、以下の点だけ読み替えてください。
 
-> **📝 補足：進捗の確認**
->
-> 右下に表示される「Starting Dev Container…」をクリックすると、
-> ログウィンドウが開き、進捗状況を確認できます。
-
-### 5.3 テストファイルの作成と動作確認
-
-コンテナが起動したら、`main.tex` を作成して動作確認を行います。
-
-**`main.tex`（upLaTeX版）:**
-
-```latex
-%!TEX program = uplatex
-\RequirePackage{plautopatch}
-\documentclass[uplatex,dvipdfmx,a4paper]{jlreq}
-
-% パッケージ
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{pxjahyper}
-
-% 定理環境
-\newtheorem{theorem}{定理}
-\newtheorem{lemma}{補題}
-
-\title{Docker環境 動作確認}
-\author{Your Name}
-\date{\today}
-
-\begin{document}
-\maketitle
-
-\section{はじめに}
-
-WindowsのDocker環境から、こんにちは！
-
-この文書は、以下の環境でコンパイルされています：
-\begin{itemize}
-    \item OS: Linux（Dockerコンテナ内）
-    \item エンジン: upLaTeX + dvipdfmx
-    \item 文書クラス: jlreq
-\end{itemize}
-
-\section{数式のテスト}
-
-有名な公式を確認します。
-
-\begin{theorem}[オイラーの公式]
-任意の実数 $\theta$ に対して、
-\[
-    e^{i\theta} =\cos\theta + i\sin\theta
-\]
-が成り立つ。
-\end{theorem}
-
-\begin{theorem}[ガウスの公式]
-\[
-\sum_{k=1}^{n} k =\frac{n(n+1)}{2}
-\]
-\end{theorem}
-
-\section{日本語処理のテスト}
-
-以下の文字が正しく表示されることを確認してください：
-
-\begin{itemize}
-    \item 通常の漢字：数学、物理、化学
-    \item JIS第3・第4水準：髙橋、﨑田、㈱
-    \item 記号：①②③、㍻㍼㍽
-\end{itemize}
-
-\end{document}
-```
-
-### 5.4 コンパイルとプレビュー
-
-1. **ファイルを保存**（`Ctrl + S`）
-    - 自動的にコンパイルが始まります
-    - 左下のステータスバーに進捗が表示されます
-2. **PDFをプレビュー**
-    - 右上の虫眼鏡アイコンをクリック
-    - または `Ctrl + Alt + V`
-3. **確認項目**
-    - 日本語が正しく表示されているか
-    - 数式が美しくレンダリングされているか
-    - 特殊な漢字（髙、﨑など）が表示されているか
-
-> **✅ 成功の目安**
->
-> - PDFが表示される
-> - 日本語・数式が正しく表示される
-> - エラーメッセージが出ない
->
-> これらが確認できれば、環境構築は完了です！
-
----
-
-## 4.8 Step 6: エンジンの切り替え方
-
-### 方法1: マジックコメント（ファイル単位）
-
-ファイルの先頭に以下のコメントを書くことで、そのファイルのコンパイルエンジンを指定できます。
-
-```latex
-%!TEX program = uplatex   ← upLaTeXを使用
-%!TEX program = lualatex  ← LuaLaTeXを使用
-%!TEX program = platex    ← pLaTeXを使用
-%!TEX program = xelatex   ← XeLaTeXを使用
-```
-
-### 方法2: サイドバーから手動選択
-
-1. VS Code左端の **TeXアイコン**（∑のようなマーク）をクリック
-2. 「COMMANDS」セクションを展開
-3. 「Build LaTeX project」の横の矢印をクリック
-4. 使用したいレシピを選択
-
-### 方法3: デフォルトレシピの変更
-
-`devcontainer.json` の `recipes` 配列の順序を変更することで、デフォルトのエンジンを変更できます。
-**一番上に書いたレシピがデフォルト**として使用されます。
-
----
-
-## 4.9 Step 7: データの永続化と管理
-
-### ファイルの保存場所
-
-| 場所 | 説明 | 永続性 |
-| --- | --- | --- |
-| `/workspaces/<開いたフォルダ名>/`（例：`/workspaces/thesis/`） | 作業フォルダ（VS Codeで開いたWSL側のフォルダ、例：`/home/ユーザー名/texwork/thesis/` がマウントされる） | **永続** |
-| `/root/` など | コンテナ内のその他の場所 | **コンテナ削除時に消失** |
-
-**重要：** 作業ファイルは必ず `/workspaces/` 以下（= WSL側の `/home/ユーザー名/texwork/` 以下）に保存してください。4.1で説明した通り、Windows側（`C:\texwork\`）には置かないでください。
-
-### Gitによるバージョン管理（推奨）
-
-LaTeXプロジェクトはプレーンテキストなので、Gitとの相性が抜群です。
-
-1. **`.gitignore` の作成**
-
-```
-# LaTeX中間ファイル
-*.aux
-*.bbl
-*.blg
-*.log
-*.out
-*.toc
-*.lof
-*.lot
-*.fls
-*.fdb_latexmk
-*.synctex.gz
-*.dvi
-
-# 生成されるPDF（必要に応じて）
-# *.pdf
-
-# エディタ設定
-.vscode/
-```
-
-1. **リポジトリの初期化**
-
-VS Code内のターミナル（`Ctrl + ``）で：
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-```
-
----
-
-## 4.10 Docker環境のトラブルシューティング
-
-### 症状：「コンテナーで再度開く」が表示されない
-
-**原因：** Dev Containers拡張機能がインストールされていない、または有効になっていない
-
-**対処：**
-1. 拡張機能タブで「Dev Containers」を検索
-2. インストール済みであれば「有効にする」をクリック
-3. VS Codeを再起動
-
-### 症状：コンテナの起動が途中で止まる
-
-**原因：** Dockerイメージのダウンロード失敗、またはネットワークの問題
-
-**対処：**
-1. Docker Desktopを再起動
-2. PowerShellで以下を実行してイメージを手動取得：
-`docker pull texlive/texlive:latest`
-3. 再度「コンテナーで再度開く」を実行
-
-### 症状：コンパイルが「Recipe terminated with error」で失敗
-
-**原因：** TeXファイルの文法エラー、またはパッケージの不足
-
-**対処：**
-1. 「OUTPUT」パネル（`Ctrl + Shift + U`）で「LaTeX Compiler」を選択
-2. エラーメッセージを確認
-3. よくあるエラー：
-- `Undefined control sequence` → コマンドのスペルミス
-- `File not found` → パッケージの読み込み忘れ
-- `Missing $ inserted` → 数式モードの閉じ忘れ
-
-### 症状：PDFが表示されない
-
-**原因：** SyncTeXファイルの生成失敗、またはPDFビューアの問題
-
-**対処：**
-1. 「LaTeX Workshop」サイドバー → 「View LaTeX PDF」をクリック
-2. それでも表示されない場合、`main.pdf` をダブルクリックして直接開く
-
-### 症状：日本語が文字化けする
-
-**原因：** 文書クラスとエンジンの不一致
-
-**対処：**
-- upLaTeXを使う場合：`\documentclass[uplatex,dvipdfmx]{jlreq}`
-- LuaLaTeXを使う場合：`\documentclass{jlreq}` + `\usepackage{luatexja}`
-
-### 症状：コンテナが非常に遅い
-
-**原因：** WSL2のメモリ不足、またはDockerのリソース設定
-
-**対処：**
-1. Docker Desktop → Settings → Resources でメモリを増やす
-2. 不要なコンテナを削除：
-`docker system prune`
-
----
-
-## 4.11 発展：複数プロジェクトの管理
-
-複数のLaTeXプロジェクトを管理する場合、以下の構成を推奨します。
-
-```
-/home/ユーザー名/texwork/
-├── thesis/              ← 卒論・修論
-│   ├── .devcontainer/
-│   │   └── devcontainer.json
-│   ├── main.tex
-│   └── chapters/
-├── report/              ← 授業レポート
-│   ├── .devcontainer/
-│   │   └── devcontainer.json
-│   └── *.tex
-└── slides/              ← 発表スライド
-    ├── .devcontainer/
-    │   └── devcontainer.json
-    └── *.tex
-```
-
-各プロジェクトフォルダに `.devcontainer/` を配置することで、プロジェクトごとに独立したコンテナ環境を持つことができます。
-
-> **📝 補足：Windows側からのアクセス**
->
-> WSL側のファイルは、Windowsエクスプローラーから `\\wsl$\Ubuntu\home\ユーザー名\texwork\` でアクセスできます。
-> ただし、日常的な作業はVS Code（WSL接続）から行うことを推奨します。
+- プロジェクトフォルダは、4.6.2 で作った WSL 側のフォルダ（例：`/home/ユーザー名/texwork/thesis/`）です
+- 「コンテナーで再度開く」は、4.7 で WSL 側のフォルダを開いた状態から実行します
+- コンテナの中では、このフォルダが `/workspaces/thesis/` として見えます。作業ファイルは必ずこの下（＝WSL 側）に保存してください
 
 ---
 
@@ -1476,50 +981,9 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 2. BIOSで仮想化支援機能（Intel VT-x / AMD-V）が有効になっているか確認
 3. Docker Desktopを再インストール
 
-### 症状：「コンテナーで再度開く」が表示されない
+### その他のDocker環境のトラブル
 
-**原因：** Dev Containers拡張機能がインストールされていない
-
-**対処：**
-1. VS Codeの拡張機能タブで「Dev Containers」を検索
-2. インストールされていない場合はインストール
-3. VS Codeを再起動
-
-### 症状：コンテナの起動が途中で止まる / タイムアウトする
-
-**原因：** ネットワークの問題、またはDockerイメージの破損
-
-**対処：**
-1. Docker Desktopを再起動
-2. PowerShellで以下を実行してイメージを手動取得：
-   ```powershell
-   docker pull texlive/texlive:latest
-   ```
-3. 不要なイメージ・コンテナを削除してディスク容量を確保：
-   ```powershell
-   docker system prune -a
-   ```
-
-### 症状：コンテナ内でコンパイルが失敗する
-
-**原因：** TeXファイルの文法エラー、またはレシピの設定ミス
-
-**対処：**
-1. VS Codeの「OUTPUT」パネル（`Ctrl + Shift + U`）で「LaTeX Compiler」を選択
-2. エラーメッセージを確認
-3. よくあるエラーと対処：
-- `Undefined control sequence` → コマンドのスペルミス、またはパッケージ不足
-- `File 'xxx.sty' not found` → パッケージがTeX Liveに含まれていない（通常は含まれているはず）
-- `! LaTeX Error: Missing \begin{document}` → プリアンブルの構文エラー
-
-### 症状：PDFプレビューが真っ白 / 表示されない
-
-**原因：** コンパイル失敗、またはPDFビューアの問題
-
-**対処：**
-1. まずコンパイルが成功しているか確認（`main.pdf` が生成されているか）
-2. LaTeX Workshopサイドバー → 「View LaTeX PDF」をクリック
-3. それでも表示されない場合、エクスプローラーから `main.pdf` を直接開いて確認
+「コンテナーで再度開く」が表示されない、コンテナの起動が止まる、コンパイルが失敗する、PDFが表示されない、などは Mac と共通です。[Docker編](docker.md) のトラブルシューティングを参照してください。
 
 ### 症状：コンテナが非常に遅い / メモリ不足
 
@@ -1528,7 +992,11 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 **対処：**
 1. ユーザーフォルダ（`C:\Users\<ユーザー名>\`）に `.wslconfig` ファイルを作成
 2. 以下の内容を記述：
-`ini    [wsl2]    memory=4GB    processors=2`
+   ```ini
+   [wsl2]
+   memory=4GB
+   processors=2
+   ```
 3. PowerShellで `wsl --shutdown` を実行し、Docker Desktopを再起動
 
 **原因2：** プロジェクトをWindows側（`/mnt/c/`）に置いている

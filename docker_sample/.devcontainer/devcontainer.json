@@ -1,36 +1,68 @@
 {
-	"name": "LaTeX Dev Container",
+	"name": "LaTeX (TeX Live)",
+	// TeX Live 公式イメージ（全パッケージ入り）を使用
 	"image": "texlive/texlive:latest",
+
 	"customizations": {
 		"vscode": {
+			// コンテナ内のVS Codeに入れる拡張機能
 			"extensions": [
 				"James-Yu.latex-workshop",
 				"MS-CEINTL.vscode-language-pack-ja"
 			],
+			// コンテナ内でのVS Code設定（ローカルの設定より優先されます）
 			"settings": {
+				// 変更後、一定時間で自動保存し、保存をきっかけに自動ビルドを走らせる
+				"files.autoSave": "afterDelay",
+				"editor.wordWrap": "on",
 				"latex-workshop.latex.autoBuild.run": "onSave",
 				"latex-workshop.view.pdf.viewer": "tab",
+				"latex-workshop.latex.autoClean.run": "onBuilt",
+
+				// 一番上のレシピがデフォルトで実行されます
 				"latex-workshop.latex.recipes": [
-					{
-						"name": "uplatex",
-						"tools": [
-							"latexmk_uplatex"
-						]
-					}
+					{ "name": "upLaTeX", "tools": ["latexmk_uplatex"] },
+					{ "name": "LuaLaTeX", "tools": ["latexmk_lualatex"] },
+					{ "name": "pLaTeX", "tools": ["latexmk_platex"] },
+					{ "name": "XeLaTeX", "tools": ["latexmk_xelatex"] }
 				],
+
+				// 各エンジンの細かい指定は、プロジェクト直下の .latexmkrc に任せる
 				"latex-workshop.latex.tools": [
 					{
 						"name": "latexmk_uplatex",
 						"command": "latexmk",
+						"args": ["-gg", "-pdfdvi", "-outdir=%OUTDIR%", "%DOC%"]
+					},
+					{
+						"name": "latexmk_lualatex",
+						"command": "latexmk",
+						"args": ["-gg", "-pdflua", "-outdir=%OUTDIR%", "%DOC%"]
+					},
+					{
+						"name": "latexmk_platex",
+						"command": "latexmk",
 						"args": [
 							"-gg",
 							"-pdfdvi",
+							"-latex=platex",
+							"-synctex=1",
+							"-interaction=nonstopmode",
+							"-file-line-error",
+							"-outdir=%OUTDIR%",
 							"%DOC%"
 						]
+					},
+					{
+						"name": "latexmk_xelatex",
+						"command": "latexmk",
+						"args": ["-gg", "-xelatex", "-outdir=%OUTDIR%", "%DOC%"]
 					}
 				]
 			}
 		}
 	},
+
+	// ファイル権限のトラブルを防ぐ設定
 	"remoteUser": "root"
 }

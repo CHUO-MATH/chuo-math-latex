@@ -127,6 +127,10 @@ LaTeXでの文書作成は、プログラミングそのものです。
 
 数理系の学生にとって、この第2章が最初の難関であり、同時に**「研究者としての第一歩」**でもあります。
 
+> **📝 補足：Docker で環境を作る方法もあります**
+>
+> Mac に直接 TeX Live を入れる代わりに、Docker コンテナの中に LaTeX 環境を作ることもできます。Mac 本体を汚したくない場合や、Windows の人と完全に同じ環境で作業したい場合は、[Docker編](docker.md) を参照してください。本ガイドでは、Mac に直接入れる方法を説明します。
+
 まずは用語を整理しましょう。初心者が混乱しやすい「3つのキーワード」があります。
 
 ### 1. 基礎知識：3つの重要キーワード
@@ -458,8 +462,10 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
             "args": [
                 "-gg",
                 "-pdfdvi",
-                "-latex='platex'",
-                "-latexoption='-kanji=utf8 -no-guess-input-env'",
+                "-latex=platex",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
                 "-outdir=%OUTDIR%",
                 "%DOC%"
             ]
@@ -645,12 +651,13 @@ TeXは古い言語であるため、変数を格納する「レジスタ」の�
 ### e-pTeX (e-TeX + pTeX)
 
 「pTeX（日本語機能）」と「e-TeX（拡張機能）」という2つの進化を合体（マージ）させたのが **e-pTeX** です。
-現在、ターミナルで `platex` コマンドを打つと、以下のようなバージョン情報が表示されます。
+かつては、ターミナルで `platex` コマンドを打つと `This is e-pTeX, ...` と表示されていました。現在の TeX Live では、`platex` の中身も次節の e-upTeX になっていて、`platex --version` は以下のように表示されます（バージョン番号は年度によって違います）。
 
 ```bash
-This is e-pTeX, Version 3.1415926-p3.4-110825-2.6 (utf8.euc) ...
-restricted \write18 enabled.
+e-upTeX 3.141592653-p4.1.2-u2.00-250202-2.6 (utf8.euc) (TeX Live 2025)
 ```
+
+e-upTeX のプログラムを pLaTeX の設定（フォーマット）で動かしているので、文書から見た動作は従来の pLaTeX と同じです。
 
 ## 4. Unicodeの壁と upTeX の革新
 
@@ -700,6 +707,7 @@ LaTeXには大きく分けて、**「DVI（中間ファイル）を経由する�
 ```
 
 - 中間ファイル（DVI）を作らず、エンジンが直接 PDF を書き出します。
+- lualatex の中身（LuaHBTeX）は、Lua 言語と HarfBuzz（文字描画エンジン）を使って、高度なフォント処理をしながら PDF を作ります。
 - ドライバの指定忘れによるトラブルが起きません。
 
 ### DVI (DeVice Independent) とは
@@ -737,6 +745,8 @@ pdfTeXの後継であり、将来の標準と目されています。
 | **e-upTeX** (upLaTeX) | Unicode | DVI経由 | **日本の学術標準**。過去の資産（jsclasses）と完全互換。「髙」もOK。**コンパイルが高速。** | 大学指定のレポート、学会論文。**本ガイドの推奨。** |
 | **LuaTeX** (LuaLaTeX) | Unicode | 直接PDF | **モダン標準**。Luaによる拡張性と直接出力の安定性。TikZと好相性。ただし**コンパイルがやや遅い**。 | 自由形式のレポート、スライド、自作文書。 |
 | **XeTeX** | Unicode | XDV経由 | **フォント重視**。OSのフォントが簡単に使える。日本語組版はやや甘い。 | 特殊なフォントを使いたいデザイン重視の文書。 |
+| pLaTeX | JIS/EUC系 | DVI経由 | **レガシー**。1990年代からの標準。文書の中では「髙」「森鷗外」などのUnicode文字を直接扱えない。 | 古いテンプレートを使う必要があるときだけ。新しく書くなら upLaTeX。 |
+| pdfTeX (pdfLaTeX) | 8bit | 直接PDF | **欧米の標準**。そのままでは日本語が通らない。 | 英語だけの文書。日本語のレポートには向かない。 |
 
 > **本ガイドでupLaTeXをデフォルトにしている理由**
 >
@@ -985,7 +995,7 @@ TeXは、ピリオド `.` の後ろに「文が終わった」と判断して広
 
 ### 共通：文献データベース（.bibファイル）の作成
 
-どちらの方法でも、まず `myref.bib` というファイルを作り、文献情報を記述します。
+どちらの方法でも、まず `references.bib` というファイルを作り、文献情報を記述します。
 
 ```
 @book{knuth84,
@@ -1014,7 +1024,7 @@ TeXは、ピリオド `.` の後ろに「文が終わった」と判断して広
     
     ```latex
     \bibliographystyle{junsrt} % スタイル指定（junsrt: 出現順、jplain: 著者名順）
-    \bibliography{myref}       % .bibファイルの読み込み（拡張子なし）
+    \bibliography{references}       % .bibファイルの読み込み（拡張子なし）
     ```
     
 
@@ -1028,7 +1038,7 @@ Unicodeに強く、カスタマイズが容易な現代的な方法です。upLa
     \usepackage[style=numeric, backend=biber]{biblatex}
     % style=numeric: 番号形式 [1], [2]...
     % style=authoryear: 著者年形式 (Knuth 1984)
-    \addbibresource{myref.bib} % 拡張子 .bib まで書く
+    \addbibresource{references.bib} % 拡張子 .bib まで書く
     ```
     
 2. **本文での引用:**
