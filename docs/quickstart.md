@@ -33,12 +33,13 @@ MacはUNIXベースであり、LaTeX環境との親和性が非常に高いで�
 ```
 
 3. **【重要】パスを通す (Path Setup)**  
-   * インストール完了時に、画面の下の方に **Run these two commands in your terminal to add Homebrew to your PATH:** という表示が出ているはずです。  
-   * そこに書かれている2行のコマンドを**必ず**実行してください。  
+   * インストール完了時に、画面の下の方の「Next steps」に **Run these commands in your terminal to add Homebrew to your PATH:** という表示が出ているはずです。  
+   * そこに書かれているコマンド（3行）を**必ず**実行してください。  
    * *（もし見逃した場合は、以下のコマンドを順に実行してください）*
 
 ```bash
-(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/$USER/.zprofile
+echo >> ~/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
@@ -51,7 +52,7 @@ brew --version
 
 ### Step 1: MacTeXのインストール
 
-Homebrewを使って、LaTeXの「全部入りパック」である **MacTeX** をインストールします。容量が5GB以上あるため、安定したWi-Fi環境で行ってください。
+Homebrewを使って、LaTeXの「全部入りパック」である **MacTeX** をインストールします。ダウンロードが約6GB、インストール後は約9GBになるため、空き容量と安定したWi-Fi環境を確保してから行ってください。
 
 1. ターミナルで以下を実行します。
 
@@ -132,8 +133,8 @@ tlmgr update --self --all
 
 MacTeXに標準で付属する**TeXShop**です（追加インストール不要）。TeXShopには uplatex 用の設定が「プロファイル」としてあらかじめ用意されているので、選ぶだけで使えます。
 
-1. TeXShopを起動し、メニューの **「TeXShop」→「環境設定」** を開きます。
-2. 「Engine」タブを開き、左下の **「設定プロファイル（Default profiles）」** から、以下のどちらかを選び、右下の **「OK」** を押します。
+1. TeXShopを起動し、メニューの **「TeXShop」→「環境設定...」** を開きます。
+2. 環境設定ウインドウの下にある **「設定プロファイル」** のメニューから、以下のどちらかを選び、**「OK」** を押します。
 3. 環境設定をいったん閉じて、TeXShopを再起動します。
 4. main.tex を開き、Cmd+T（タイプセット）を実行します。
 
@@ -220,11 +221,11 @@ LaTeX Workshop拡張機能を使った構成です。以下のようなVS Code�
     // ※一番上に書かれたレシピが標準で利用されます
     "latex-workshop.latex.recipes": [
         {
-            "name": "uplatex (Standard)",
+            "name": "upLaTeX",
             "tools": ["latexmk_uplatex"]
         },
         {
-            "name": "lualatex (Modern)",
+            "name": "LuaLaTeX",
             "tools": ["latexmk_lualatex"]
         }
     ],

@@ -1,11 +1,11 @@
 {
     "latex-workshop.latex.recipes": [
         {
-            "name": "uplatex (Standard)",
+            "name": "upLaTeX",
             "tools": ["latexmk_uplatex"]
         },
         {
-            "name": "lualatex (Modern)",
+            "name": "LuaLaTeX",
             "tools": ["latexmk_lualatex"]
         }
     ],

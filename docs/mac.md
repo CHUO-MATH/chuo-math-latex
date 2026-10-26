@@ -39,7 +39,7 @@
 
 | 項目 | 必要量 | 備考 |
 | --- | --- | --- |
-| **ストレージ空き容量** | **約10GB以上** | MacTeX本体（8〜10GB）＋エディタ＋作業領域 |
+| **ストレージ空き容量** | **約10GB以上** | MacTeX本体（インストール後 約9GB）＋エディタ＋作業領域 |
 | **インターネット接続** | 安定した回線 | ダウンロードに30分〜1時間程度かかります |
 | **管理者パスワード** | Macのログインパスワード | インストール時に必要です |
 
@@ -194,7 +194,7 @@ Homebrewを使って、MacTeX（実体はTeX Live）をインストールしま�
 
 > **⚠️ 注意：時間と容量について**
 >
-> MacTeXは非常に巨大（約8〜10GB）です。
+> MacTeXは非常に巨大です（ダウンロード約6GB、インストール後 約9GB）。
 > TeX Liveの膨大なライブラリをすべてダウンロードするため、回線速度にもよりますが30分〜1時間程度かかります。
 > 焦らず、この間に他の課題を済ませるなどして気長に待ちましょう。
 
@@ -293,8 +293,8 @@ MacTeX には TeX 専用エディタの **TeXShop** が付いてきます（`/Ap
 
 TeXShop には uplatex 用の設定が「プロファイル」として用意されているので、選ぶだけで使えます。
 
-1. TeXShop を起動し、メニューの **「TeXShop」→「環境設定」** を開きます。
-2. 「Engine」タブを開き、左下の **「設定プロファイル（Default profiles）」** から **「upTeX (latexmk)」** を選び、右下の **「OK」** を押します。
+1. TeXShop を起動し、メニューの **「TeXShop」→「環境設定...」** を開きます。
+2. 環境設定ウインドウの下にある **「設定プロファイル」** のメニューから **「upTeX (latexmk)」** を選び、**「OK」** を押します。
 3. 環境設定をいったん閉じて、TeXShop を再起動します。
 4. `.tex` ファイルを開き、`[Cmd]` + `[T]`（タイプセット）を実行します。
 
@@ -495,14 +495,18 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
 - **パターンB: サイドバーからの一時的な切り替え（手動）**
     - 「このファイルだけ、ちょっとpLaTeXで試したい」という場合、VS Code左端の **TeXアイコン** > **COMMANDS** > **Build LaTeX project** から、使いたいレシピをクリックします。
 - **パターンC: マジックコメント（ファイルごとの指定）**
-    - 「このファイルは絶対にupLaTeXでコンパイルしなければならない」という場合、ファイルの**先頭**に以下の「マジックコメント」を記述します。これが**最も高い優先度**を持ちます。
+    - 「このファイルはいつもLuaLaTeXでコンパイルしたい」という場合、ファイルの**先頭**に、使いたいレシピの名前を「マジックコメント」で書きます。これが**最も高い優先度**を持ちます。
 
-**upLaTeXを使いたい場合:**
+**LuaLaTeXを使いたい場合:**
 
 ```latex
-%!TEX program = uplatex
-\documentclass[uplatex,dvipdfmx]{jlreq}
+% !LW recipe = LuaLaTeX
+\documentclass{jlreq}
 ```
+
+> **⚠️ `% !TEX program = …` は使わない**
+>
+> ネット上では `% !TEX program = uplatex` という書き方もよく見かけます。しかし LaTeX Workshop は、この行があるとレシピ（latexmk）を使わずに、そのエンジンを**1回だけ直接実行**します。uplatex の場合は DVI ができるだけで **PDF が作られず**、lualatex の場合も相互参照や参考文献が処理されません。VS Code では、レシピの名前を指定する `% !LW recipe = …` を使ってください。
 
 ※ これを書いておけば、レシピの順番や手動操作に関わらず、自動的に指定されたエンジンが選ばれます。
 
@@ -520,7 +524,6 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
 **パターンA: upLaTeXでのテスト（本ガイド推奨・学術標準）**`hello_up.tex` というファイルを作成し、以下を記述します。
 
 ```latex
-%!TEX program = uplatex
 \RequirePackage{plautopatch} % ルール1：既存パッケージとの互換性を保つパッチ
 \documentclass[uplatex,dvipdfmx]{jlreq} % エンジン非依存のjlreqクラス + ドライバ指定
 \usepackage{amsmath}
@@ -559,7 +562,7 @@ PDFが表示されたら、以下の点を確認してください：
 **パターンB: LuaLaTeXでのテスト（モダン標準）**`hello_lua.tex` というファイルを作成し、以下を記述します。
 
 ```latex
-%!TEX program = lualatex
+% !LW recipe = LuaLaTeX
 \documentclass{jlreq} % jlreqはLuaLaTeXでも同じコードで動く
 \usepackage{amsmath}
 
@@ -1136,7 +1139,6 @@ thesis/
 ### 基本的な構造
 
 ```latex
-%!TEX program = uplatex
 \RequirePackage{plautopatch}
 \documentclass[uplatex,dvipdfmx]{beamer}
 
@@ -1187,7 +1189,7 @@ thesis/
 ### LuaLaTeXで使う場合
 
 ```latex
-%!TEX program = lualatex
+% !LW recipe = LuaLaTeX
 \documentclass{beamer}
 \usetheme{Madrid}
 \usepackage{luatexja}       % 日本語サポート

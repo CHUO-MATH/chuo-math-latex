@@ -164,7 +164,7 @@ thesis/                      ← プロジェクトフォルダ（名前は自�
 | 設定項目 | 値 | 説明 |
 | --- | --- | --- |
 | `name` | `"LaTeX (TeX Live)"` | コンテナの名前。任意 |
-| `image` | `"texlive/texlive:latest"` | 使用するDockerイメージ。公式のTeX Live全パッケージ版（約4〜5GB）。`latest` は常に最新の TeX Live を指す |
+| `image` | `"texlive/texlive:latest"` | 使用するDockerイメージ。公式のTeX Live全パッケージ版（ダウンロード約3GB。展開するとさらに大きくなる）。`latest` は常に最新の TeX Live を指す |
 | `extensions` | LaTeX Workshop、日本語化 | コンテナの中のVS Codeに自動で入る拡張機能 |
 | `files.autoSave` | `"afterDelay"` | 一定時間後に自動保存（既定は1秒）。`"off"` で無効化 |
 | `editor.wordWrap` | `"on"` | 長い行を折り返して表示 |
@@ -205,7 +205,7 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
    * **Windows:** まず WSL 側のフォルダを開きます（[Windows編](windows.md) 第4章の「VS CodeでWSL側のフォルダを開く」）。
 2. 画面右下に「コンテナーで再度開く（Reopen in Container）」という通知が出るので、クリックします。
    * 出ない場合は、左下のリモートインジケーター（`><` のアイコン）をクリックし、**「コンテナーで再度開く」** を選びます。
-3. **初回のみ**、約4〜5GBのイメージのダウンロードとコンテナの作成が行われます（回線によって10〜30分程度）。
+3. **初回のみ**、約3GBのイメージのダウンロード・展開とコンテナの作成が行われます（回線によって10〜30分程度）。
 4. 起動が終わると、左下の表示が **「開発コンテナー: LaTeX (TeX Live)」**（英語表示では「Dev Container: …」）に変わります。
 
 > **📝 補足：進捗の確認**
@@ -267,10 +267,10 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
 
 ## Step 7: エンジンの切り替え
 
-* **ファイルごと:** ファイルの先頭にマジックコメントを書きます。
+* **ファイルごと:** ファイルの先頭に、使いたいレシピの名前をマジックコメントで書きます（`% !TEX program = …` はレシピを使わずエンジンを1回だけ実行するので使いません。詳しくは [Mac編](mac.md) 第4章）。
 
 ```latex
-%!TEX program = lualatex
+% !LW recipe = LuaLaTeX
 ```
 
 * **一時的に:** VS Code 左端の **TeXアイコン** →「COMMANDS」→「Build LaTeX project」の横の矢印から、使いたいレシピを選びます。
@@ -340,7 +340,7 @@ texwork/
 
 ### 初回の起動がすごく遅い / 途中で止まる
 
-**原因：** 約4〜5GBのイメージをダウンロードしているため。途中で止まる場合は、ネットワークの問題かダウンロードの失敗
+**原因：** 約3GBのイメージをダウンロードして展開しているため。途中で止まる場合は、ネットワークの問題かダウンロードの失敗
 
 **対処：**
 1. 初回は10〜30分かかるのが普通です。2回目以降は数秒で起動します
@@ -362,7 +362,7 @@ docker pull texlive/texlive:latest
    - `! LaTeX Error: Missing \begin{document}` → プリアンブルの構文エラー
 3. 日本語が文字化けする・通らない場合は、文書クラスとエンジンが合っているか確認する
    - upLaTeX：`\documentclass[uplatex,dvipdfmx]{jlreq}`
-   - LuaLaTeX：`\documentclass{jlreq}`（`%!TEX program = lualatex` を先頭に）
+   - LuaLaTeX：`\documentclass{jlreq}`（`% !LW recipe = LuaLaTeX` を先頭に）
 
 ### 必要なパッケージがないと言われる
 

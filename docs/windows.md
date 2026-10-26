@@ -364,7 +364,7 @@ Windows固有の問題（日本語パス、OneDrive同期、PATH競合など）�
 - 日本語も問題なく使える
 
 **デメリット：**
-- 無料プランではコンパイル時間に制限あり（20秒）
+- 無料プランではコンパイル時間に制限あり（2025年に20秒から10秒に短縮。図や参考文献の多い文書では足りなくなることがある）
 - オフラインでは使えない
 - 大規模なプロジェクトには不向き
 
@@ -385,7 +385,7 @@ Windows固有の問題（日本語パス、OneDrive同期、PATH競合など）�
 
 > **📝 推奨**
 >
-> 卒論・修論レベルの文書であれば、**Overleaf**で十分対応できます。
+> 卒論・修論レベルの文書でも、**Overleaf**で書くことはできます。ただし無料プランではコンパイル時間の上限が短いので、図の多い長い文書では有料プランやローカル環境が必要になることがあります。
 >
 > 「環境構築に時間を使いたくない」「共同作業が多い」という方は、クラウドサービスで十分です。ローカル環境は、必要になったときに改めて作れば構いません。
 
@@ -587,11 +587,18 @@ flowchart TB
 
 | 項目 | 要件 |
 | --- | --- |
-| OS | Windows 10 バージョン 2004 以降 / Windows 11 |
-| エディション | Home / Pro / Enterprise |
-| メモリ | 8GB以上推奨（最低4GB） |
+| OS | Windows 11 バージョン 23H2 以降（Windows 10 は 22H2 が必要） |
+| エディション | Home / Pro / Enterprise / Education（Home・Education は Linux コンテナのみ。本ガイドは Linux コンテナなので問題なし） |
+| WSL | バージョン 2.1.5 以降 |
+| メモリ | 8GB以上 |
 | ストレージ | 20GB以上の空き容量 |
-| CPU | 仮想化支援機能（Intel VT-x / AMD-V）対応 |
+| CPU | 64bit、仮想化支援機能（Intel VT-x / AMD-V）対応 |
+
+> **📝 Windows 10 について**
+>
+> Windows 10 は、Microsoft のサポートが2025年10月に終了しています。Docker Desktop は Microsoft のサポート期間内の Windows だけを対象にしているので、これから環境を作るなら Windows 11 をおすすめします。
+
+要件は Docker Desktop の更新で変わることがあります。最新の情報は [Docker Desktop for Windows のインストール](https://docs.docker.com/desktop/setup/install/windows-install/) で確認してください。
 
 ### 用語解説
 
