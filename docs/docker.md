@@ -18,18 +18,18 @@ PCに直接 TeX Live を入れる代わりに、**Dockerコンテナ（仮想環
 
 ### 仕組み
 
-```
-┌──────────────────────────────────────────────┐
-│  あなたのPC（Mac / Windows の WSL2）         │
-│  ┌────────────────────────────────────────┐  │
-│  │  Docker コンテナ（texlive/texlive）    │  │
-│  │  - uplatex, lualatex, latexmk など     │  │
-│  │  - TeX Live の全パッケージ             │  │
-│  │      ↑ マウント                        │  │
-│  │  プロジェクトフォルダ ←→ /workspaces/  │  │
-│  └────────────────────────────────────────┘  │
-│  VS Code（Dev Containers 拡張機能）          │
-└──────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph PC["あなたのPC（Mac / Windows の WSL2）"]
+        folder["プロジェクトフォルダ"]
+        subgraph C["Docker コンテナ（texlive/texlive）"]
+            tl["TeX Live の全パッケージ<br>uplatex, lualatex, latexmk など"]
+            ws["/workspaces/フォルダ名/"]
+        end
+        folder <-->|マウント| ws
+        vscode["VS Code<br>（Dev Containers 拡張機能）"]
+    end
+    vscode -.->|接続| C
 ```
 
 - PC上のプロジェクトフォルダが、コンテナの中の `/workspaces/<フォルダ名>/` にマウント（共有）されます。

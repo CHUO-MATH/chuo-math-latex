@@ -247,9 +247,9 @@ Homebrewを使って、MacTeX（実体はTeX Live）をインストールしま�
 
 どちらを選んでも、後述する設定や使い勝手はほぼ同じです。好みで選んでください。
 
-> **📝 補足：数学科環境での推奨について**
+> **📝 補足：どちらを選ぶか**
 >
-> 数学科の公式環境としては VS Code を推奨します。Cursorは個人利用の範囲で使用してください。
+> 本ガイドでは VS Code を推奨します。Cursor を使う場合も、以降の設定はそのまま使えます。
 
 - **パターンA: Visual Studio Code (VS Code)【推奨】**
     - **特徴:** Microsoft製。圧倒的なシェアと安定性を誇る業界標準。
@@ -689,10 +689,10 @@ LaTeXには大きく分けて、**「DVI（中間ファイル）を経由する�
 
 **Type A: DVIを経由するルート（uplatex, platex）**
 
-```
-[.tex] → [uplatex (e-upTeX)] → [.dvi] → [dvipdfmx] → [.pdf]
-                                            ↑
-                                      画像・フォント
+```mermaid
+flowchart LR
+    src[".tex"] --> eng["uplatex<br>（e-upTeX）"] --> dvi[".dvi"] --> drv["dvipdfmx"] --> pdf[".pdf"]
+    img["画像・フォント"] -.-> drv
 ```
 
 1. **Engine (e-upTeX):** ソースコードを読み、文字の配置情報だけが書かれた DVI ファイルを出力します。この時点では**画像の実体やフォントデータは含まれていません**。
@@ -700,10 +700,10 @@ LaTeXには大きく分けて、**「DVI（中間ファイル）を経由する�
 
 **Type B: PDFを直接出力するルート（lualatex, pdflatex）**
 
-```
-[.tex] → [lualatex (LuaHBTeX)] → [.pdf]
-              ↑
-        画像・フォント
+```mermaid
+flowchart LR
+    src[".tex"] --> eng["lualatex<br>（LuaHBTeX）"] --> pdf[".pdf"]
+    img["画像・フォント"] -.-> eng
 ```
 
 - 中間ファイル（DVI）を作らず、エンジンが直接 PDF を書き出します。
