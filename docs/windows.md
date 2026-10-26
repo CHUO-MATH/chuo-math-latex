@@ -921,7 +921,7 @@ ls -la texwork/
                 "editor.wordWrap": "on",
 
                 // === LaTeX Workshop 設定 ===
-                "latex-workshop.latex.autoBuild.run": "onFileChange",
+                "latex-workshop.latex.autoBuild.run": "onSave",
                 "latex-workshop.view.pdf.viewer": "tab",
                 "latex-workshop.latex.autoClean.run": "onBuilt",
 
@@ -998,11 +998,13 @@ ls -la texwork/
                 ],
 
                 // === クリーンアップ設定 ===
+                // ※ clean.method を "glob" にしたときだけ使われるリスト（既定の "command" では latexmk -c で掃除される）
+                // ※ *.synctex.gz は消さない（消すと PDF とソースの相互ジャンプができなくなる）
                 "latex-workshop.latex.clean.fileTypes": [
                     "*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof",
                     "*.lot", "*.out", "*.toc", "*.acn", "*.acr", "*.alg",
                     "*.glg", "*.glo", "*.gls", "*.ist", "*.fls", "*.log",
-                    "*.fdb_latexmk", "*.dvi", "*.synctex.gz", "*.nav", "*.snm", "*.vrb"
+                    "*.fdb_latexmk", "*.dvi", "*.nav", "*.snm", "*.vrb"
                 ]
             }
         }
@@ -1032,9 +1034,9 @@ ls -la texwork/
 
 | 設定項目 | 値 | 説明 |
 | --- | --- | --- |
-| `autoBuild.run` | `"onFileChange"` | ファイル保存時に自動コンパイル。`"never"` で手動のみ |
+| `autoBuild.run` | `"onSave"` | ファイル保存時に自動コンパイル（自動保存でも動く）。`"never"` で手動のみ |
 | `view.pdf.viewer` | `"tab"` | PDFをVS Code内のタブで表示。`"browser"` で外部ブラウザ |
-| `autoClean.run` | `"onBuilt"` | コンパイル成功後に中間ファイルを自動削除 |
+| `autoClean.run` | `"onBuilt"` | コンパイルのたびに（失敗したときも）中間ファイルを自動削除 |
 
 ### レシピ（recipes）の仕組み
 
@@ -1083,7 +1085,7 @@ upLaTeXツールの引数を詳しく解説します。
 
 ### クリーンアップ対象ファイル
 
-`clean.fileTypes` で指定されたファイルは、自動クリーンアップの対象になります。
+`clean.method` を `"glob"` にしたとき、`clean.fileTypes` で指定されたファイルが自動クリーンアップの対象になります（既定の `"command"` では `latexmk -c` が中間ファイルを消し、PDF と `.synctex.gz` は残ります）。
 
 | 拡張子 | 生成元 | 説明 |
 | --- | --- | --- |
@@ -1093,15 +1095,14 @@ upLaTeXツールの引数を詳しく解説します。
 | `.bbl`, `.blg` | BibTeX | 参考文献処理の中間ファイル |
 | `.idx`, `.ind` | makeindex | 索引処理の中間ファイル |
 | `.dvi` | LaTeX | DVI形式の出力（PDF生成後は不要） |
-| `.synctex.gz` | SyncTeX | ソース・PDF対応情報 |
 | `.fdb_latexmk` | latexmk | 依存関係追跡データベース |
 | `.nav`, `.snm`, `.vrb` | Beamer | スライド用中間ファイル |
 
-> 📝 補足：クリーンアップの注意
+> 📝 補足：`.synctex.gz` はリストに入れない
 > 
 > 
-> `.synctex.gz` を削除すると、PDFからソースへのジャンプができなくなります。
-> SyncTeXを頻繁に使う場合は、このファイルをリストから除外することも検討してください。
+> `.synctex.gz`（ソースとPDFの対応情報）を削除すると、PDFからソースへのジャンプができなくなります。
+> そのため、上の設定ではクリーンアップの対象から外しています。
 > 
 
 ---

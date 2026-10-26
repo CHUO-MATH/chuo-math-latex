@@ -4,8 +4,6 @@
 % --- 数理系必須パッケージ ---
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm,physics}
 \usepackage{graphicx}
-\usepackage[style=numeric,backend=biber]{biblatex}
-\addbibresource{references.bib}
 \usepackage{hyperref}
 \usepackage{pxjahyper}
 
@@ -40,5 +38,7 @@
 
 例：LaTeXの必読書といえば『美文書作成入門』\cite{okumura2023}です。
 
-\printbibliography[title=参考文献]
+% 参考文献（junsrt: 引用した順に番号を振るスタイル）
+\bibliographystyle{junsrt}
+\bibliography{references} % references.bib を拡張子なしで指定
 \end{document}

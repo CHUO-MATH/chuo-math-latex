@@ -33,7 +33,7 @@ Docker環境で執筆するための「魔法のフォルダ」を作ります�
 
 ### .devcontainer/devcontainer.json
 
-このファイルが環境の設計図です。TeX Live 公式の `texlive/texlive` イメージ（全パッケージ入り）を使用します。日本語の処理系（uplatex など）や biber もすべて含まれているので、テンプレートがそのままコンパイルできます。
+このファイルが環境の設計図です。TeX Live 公式の `texlive/texlive` イメージ（全パッケージ入り）を使用します。日本語の処理系（uplatex など）や参考文献の処理（upbibtex・biber）もすべて含まれているので、テンプレートがそのままコンパイルできます。
 
 ```jsonc
 {

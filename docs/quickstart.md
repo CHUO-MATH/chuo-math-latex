@@ -142,13 +142,14 @@ MacTeXに標準で付属する**TeXShop**です（追加インストール不要
 * **「upTeX (latexmk)」**
   * latexmk 経由で uplatex → dvipdfmx という、本ガイドの標準構成と同じ流れでコンパイルします。
   * 相互参照や目次が必要な回数だけ自動的に再コンパイルしてくれるので、基本的にタイプセットを1回押すだけで済みます。
-  * ※ 索引コマンドが `upmendex` ではなく `mendex` になっている、`biber`（参考文献）には対応していないなど、Step 3-3の `.latexmkrc` と完全に同じではありません。普通のレポート（索引・参考文献なし）なら気にしなくて大丈夫です。
+  * 参考文献（BibTeX）もこのプロファイルで処理できます。
+  * ※ 索引コマンドが `upmendex` ではなく `mendex` になっている、`biber`（BibLaTeX）には対応していないなど、Step 3-3の `.latexmkrc` と完全に同じではありません。普通のレポートなら気にしなくて大丈夫です。
 * **「upTeX (ptex2pdf)」**
   * `ptex2pdf` というコマンドで uplatex を1回実行し、dvipdfmxでPDF化するだけのシンプルな仕組みです（latexmkは使いません）。
   * 相互参照や目次が反映されるまでに複数回の再実行が必要になった場合、Cmd+Tを**自分で数回押す**必要があります（自動再実行はされません）。
   * 索引・参考文献（mendex・bibtex・biber）には対応していません。
 
-索引や参考文献を使う本格的なレポートでは、どちらのプロファイルでも機能が足りないため、Step 3のVS Code系エディタを使ってください。
+参考文献（BibTeX）を使うなら「upTeX (latexmk)」を選んでください。索引や BibLaTeX を使う本格的なレポートでは、Step 3のVS Code系エディタを使ってください。
 
 ### Step 2: TeXworksを使う場合（Windowsのみ）
 
@@ -245,7 +246,7 @@ LaTeX Workshop拡張機能を使った構成です。以下のようなVS Code�
     // 3. 快適化設定
     "latex-workshop.latex.autoBuild.run": "onSave", // 保存時に自動ビルド
     "latex-workshop.view.pdf.viewer": "tab",        // エディタ内でPDF表示
-    "latex-workshop.latex.autoClean.run": "onBuilt", // ビルド成功時にゴミ箱掃除
+    "latex-workshop.latex.autoClean.run": "onBuilt", // ビルドのたびに中間ファイルを掃除
 
     // 4. 生成物をエディタ画面から除外する設定
     "files.exclude": {
@@ -300,7 +301,7 @@ latexmk は以下の順序で設定ファイルを読み込みます。
 そのフォルダの中に、配布されたテンプレートファイルをコピーして置きます。
 
 * **main.tex** (テンプレート)：ここから書き始めます。  
-* **references.bib** (参考文献データ)：必要に応じて置いてください。
+* **references.bib** (参考文献データ)：必要に応じて置いてください。文献を `\cite` で引用したら、main.tex の最後にある参考文献の2行（`\bibliographystyle` と `\bibliography`）の先頭の `%` を外してください。
 
 ※ .latexmkrc はホームディレクトリにあるため、ここにコピーする必要はありません（特殊な設定をする場合を除く）。
 

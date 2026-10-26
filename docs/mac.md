@@ -1,6 +1,6 @@
 # 数学科大学院生のためのLaTeX完全ガイド (Mac編)
 
-最終更新日: 2026-10-06
+最終更新日: 2026-10-26
 
 > 本資料の想定環境
 - macOS Ventura以降（Montereyでも動作可）
@@ -286,6 +286,27 @@ CursorはVS Codeベースですが、一部挙動が異なります。
 拡張機能のインストールや設定でエラーが出た場合は、第6章「トラブルシューティング」を参照してください。
 > 
 
+### 4. もう一つの選択肢：TeXShop
+
+MacTeX には TeX 専用エディタの **TeXShop** が付いてきます（`/Applications/TeX/TeXShop.app`。追加インストール不要）。VS Code の設定が面倒なとき、まずは手早く書き始めたいときに使えます。TeXShop だけを使う場合、第4章の設定（`.latexmkrc` と VS Code）は不要です。
+
+TeXShop には uplatex 用の設定が「プロファイル」として用意されているので、選ぶだけで使えます。
+
+1. TeXShop を起動し、メニューの **「TeXShop」→「環境設定」** を開きます。
+2. 「Engine」タブを開き、左下の **「設定プロファイル（Default profiles）」** から **「upTeX (latexmk)」** を選び、右下の **「OK」** を押します。
+3. 環境設定をいったん閉じて、TeXShop を再起動します。
+4. `.tex` ファイルを開き、`[Cmd]` + `[T]`（タイプセット）を実行します。
+
+「upTeX (latexmk)」は、latexmk 経由で uplatex → dvipdfmx という本ガイドと同じ流れでコンパイルします。相互参照・目次・参考文献（upBibTeX）も必要な回数だけ自動で処理されるので、タイプセットは1回押すだけで済みます。
+
+> 📝 補足：本ガイドの設定との違い
+> 
+> TeXShop のプロファイルは `.latexmkrc` を読まずに（`-norc`）、自前の設定で latexmk を動かします。索引には `upmendex` ではなく `mendex` を使い、Biber（BibLaTeX）には対応していません。索引や BibLaTeX を使う場合は、VS Code の構成を使ってください。
+> 
+> 「upTeX (ptex2pdf)」というプロファイルもありますが、こちらは uplatex を1回実行するだけで、相互参照の解決や参考文献の処理は自動では行われません。
+> 
+> 最短手順だけをまとめた[クイックスタート](quickstart.md)の「TeXShopを使う場合」も参考にしてください。
+
 ---
 
 # 第4章 実践：マルチエンジン対応の執筆環境構築
@@ -384,7 +405,7 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
 >     "既存の設定": "値",
 >     "別の設定": "値",    // ← ここにカンマを追加
 >     // ↓ ここから貼り付け
->     "latex-workshop.latex.autoBuild.run": "onFileChange",
+>     "latex-workshop.latex.autoBuild.run": "onSave",
 >     ...
 > }
 > ```
@@ -396,9 +417,9 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
     // --- LaTeX Workshop 設定 (推奨構成) ---
 
     // 1. 基本設定
-    // 変更後、一定時間(afterDelay)で自動保存し、それをトリガーに自動ビルドを走らせる
+    // 変更後、一定時間(afterDelay)で自動保存し、保存をきっかけに自動ビルドを走らせる
     "files.autoSave": "afterDelay",
-    "latex-workshop.latex.autoBuild.run": "onFileChange",
+    "latex-workshop.latex.autoBuild.run": "onSave",
     "latex-workshop.view.pdf.viewer": "tab",              // PDFをタブで開く
 
     // 2. レシピ（コンパイル手順）の定義
@@ -454,8 +475,10 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
     ],
 
     // 4. クリーンアップ設定（中間ファイルを削除）
+    // ※ clean.method を "glob" にしたときだけ使われるリスト。既定の "command" では latexmk -c で掃除される
+    // ※ *.synctex.gz は消さない（消すと PDF とソースの相互ジャンプができなくなる）
     "latex-workshop.latex.clean.fileTypes": [
-        "*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof", "*.lot", "*.out", "*.toc", "*.acn", "*.acr", "*.alg", "*.glg", "*.glo", "*.gls", "*.ist", "*.fls", "*.log", "*.fdb_latexmk", "*.dvi", "*.synctex.gz"
+        "*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof", "*.lot", "*.out", "*.toc", "*.acn", "*.acr", "*.alg", "*.glg", "*.glo", "*.gls", "*.ist", "*.fls", "*.log", "*.fdb_latexmk", "*.dvi"
     ]
     // --- 設定ここまで ---
 ```

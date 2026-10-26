@@ -4,8 +4,6 @@
 % --- 数理系必須パッケージ ---
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm,physics}
 \usepackage{graphicx}
-\usepackage[style=numeric,backend=biber]{biblatex}
-\addbibresource{references.bib}
 \usepackage{hyperref}
 \usepackage{pxjahyper}
 
@@ -47,7 +45,8 @@
 %\section*{謝辞}
 %指導教員や協力者への感謝を記述する。
 
-% 参考文献
-\printbibliography[title=参考文献]
+% 参考文献（\cite で文献を引用したら、下の2行の先頭の % を外す。書き方は sample.tex を参照）
+%\bibliographystyle{junsrt}
+%\bibliography{references}
 
 \end{document}

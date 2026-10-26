@@ -1,95 +1,33 @@
 {
-    "editor.fontSize": 14,
-    "editor.fontFamily": "'HackGen Console NF', Menlo, Monaco, 'Courier New', monospace",
-    "files.autoSave": "afterDelay",
     "latex-workshop.latex.recipes": [
         {
-            "name": "upLaTeX",
-            "tools": [
-                "latexmk_uplatex"
-            ]
+            "name": "uplatex (Standard)",
+            "tools": ["latexmk_uplatex"]
         },
         {
-            "name": "pLaTeX",
-            "tools": [
-                "latexmk_platex"
-            ]
-        },
-        {
-            "name": "XeLaTeX",
-            "tools": [
-                "latexmk_xelatex"
-            ]
-        },
-        {
-            "name": "LuaLaTeX",
-            "tools": [
-                "latexmk_lualatex"
-            ]
+            "name": "lualatex (Modern)",
+            "tools": ["latexmk_lualatex"]
         }
     ],
     "latex-workshop.latex.tools": [
         {
             "name": "latexmk_uplatex",
             "command": "latexmk",
-            "args": [
-                "-gg",
-                "-pdfdvi",
-                "%DOC%"
-            ]
-        },
-        {
-            "name": "latexmk_platex",
-            "command": "latexmk",
-            "args": [
-                "-gg",
-                "-pdfdvi",
-                "-latex='platex'",
-                "-latexoption='-kanji=utf8 -no-guess-input-env'",
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "%DOC%"
-            ]
-        },
-        {
-            "name": "latexmk_xelatex",
-            "command": "latexmk",
-            "args": [
-                "-gg",
-                "-xelatex",
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "%DOC%"
-            ]
+            "args": ["-gg", "-pdfdvi", "%DOC%"]
         },
         {
             "name": "latexmk_lualatex",
             "command": "latexmk",
-            "args": [
-                "-gg",
-                "-pdflua",
-                "%DOC%"
-            ]
+            "args": ["-gg", "-pdflua", "%DOC%"]
         }
     ],
     "latex-workshop.latex.autoBuild.run": "onSave",
     "latex-workshop.view.pdf.viewer": "tab",
     "latex-workshop.latex.autoClean.run": "onBuilt",
-    "latex-workshop.latex.clean.subfolder.enabled": true,
     "files.exclude": {
         "**/*.aux": true,
         "**/*.log": true,
-        "**/*.toc": true,
         "**/*.fdb_latexmk": true,
-        "**/*.fls": true,
-        "**/*.synctex.gz": true,
-        "**/*.dvi": true
-    },
-    "search.exclude": {
-        "**/*.aux": true,
-        "**/*.log": true,
-        "**/*.fdb_latexmk": true
+        "**/*.synctex.gz": true
     }
 }
