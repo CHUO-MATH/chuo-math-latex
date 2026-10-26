@@ -98,7 +98,7 @@ $dvipdf           = 'dvipdfmx %O -o %D %S';
 ```
 
 2. **main.tex**  
-   * 授業で配布されたテンプレートファイル。
+   * 本リポジトリの [docker_sample](../docker_sample/) にあるテンプレートファイル（[templates](../templates/) の main.tex と同じもの）。
 
 ## Step 4: 起動と執筆
 
