@@ -1,5 +1,10 @@
 # chuo-math-latex
 
+> ### 📢 最新のお知らせ・お願い (2026-11-13 更新)
+> * **更新内容**: 公開後の事実確認で見つかった記載の誤りを修正し、Windows 編の図解（Mermaid）対応およびライセンス表記を追加しました。また、更新履歴を [`CHANGELOG.md`](./CHANGELOG.md) にまとめました。
+> * **お願い**: テンプレートをご利用の際は最新版のファイルをご使用ください。
+> * 過去の変更履歴は **[更新履歴 (CHANGELOG.md)](./CHANGELOG.md)** をご覧ください。
+
 数理系の学生・大学院生向けの、LaTeX 環境構築ガイドとテンプレート集です。
 
 標準の構成は **upLaTeX ＋ jlreq ＋ latexmk** です。エディタは VS Code（LaTeX Workshop）のほか、TeXShop（Mac）と TeXworks（Windows）にも対応しています。
